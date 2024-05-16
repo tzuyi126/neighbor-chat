@@ -5,12 +5,11 @@ A web-based communication app for neighborhoods.
 In this project, we designed a neighborhood communication system. We designed a relational schema with an ER diagram, noted down the constraints and assumptions of our schema and justified our design with queries and some sample data. Then, we implemented a web-based application with Flask as the server, HTML and CSS as the front-end, and PostgreSQL for the database management.
 
 ## Screenshot
-![image](https://github.com/tzuyi126/neighbor-chat/assets/63236075/d965b7e1-1b63-497d-8771-423d45300c2e)
+![image](https://github.com/tzuyi126/neighbor-chat/assets/63236075/7f371176-6515-4e2e-a3d4-f9517227e666)
 **figure 1** Dashboard
 
-
-![image](https://github.com/tzuyi126/neighbor-chat/assets/63236075/8f0995d3-a442-4981-a927-459a668be882)
+![image](https://github.com/tzuyi126/neighbor-chat/assets/63236075/40c3fe8c-33b0-45f8-b058-b17810670e11)
 **figure 2** New Thread
 
-![image](https://github.com/tzuyi126/neighbor-chat/assets/63236075/51b1525c-5cec-468d-a8d6-09338650fbed)
+![image](https://github.com/tzuyi126/neighbor-chat/assets/63236075/1568b339-1ad9-4d58-a30d-3daf2041704a)
 **figure 3** Messages under the Thread
