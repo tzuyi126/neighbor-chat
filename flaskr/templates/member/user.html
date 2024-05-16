@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block header %}
+    <h1>{% block title %}
+        {% if user['uid'] == g.user['uid'] %}
+            Account
+        {% else %}
+            User Profile
+        {% endif %}
+        {% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+    <div class="row d-flex justify-content-center">
+      <div class="col col-md-9 col-lg-7 col-xl-6">
+        <div class="card" style="border-radius: 15px;">
+          <div class="card-body p-4">
+            <div class="d-flex">
+              <div class="flex-grow-1 ms-3">
+
+                <h5 class="mb-1">{{ user['first_name'] }} {{ user['last_name'] }}</h5>
+                <p class="mb-2 pb-1">{{ user['email'] }}</p>
+
+                <div class="row">
+                {% if user['uid'] == g.user['uid'] %}
+                    <div class="col">
+                        <a type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-outline-primary me-1"
+                        href="{{ url_for('auth.update') }}">Edit Profile</a>
+                    </div>
+                {% else %}
+
+                    {% if not neighbor_status %}
+                    <form class="col" method="post" action="/follow/neighbor/{{ user['uid'] }}">
+                        <button type="submit" class="btn btn-outline-primary">Follow</button>
+                    </form>
+                    {% else %}
+                    <form class="col" method="post" action="/unfollow/neighbor/{{ user['uid'] }}">
+                        <button type="submit" class="btn btn-outline-secondary">Unfollow</button>
+                    </form>
+                    {% endif %}
+                    
+                    {% if not application and not approval %}
+                    <form class="col" method="post" action="/add/friend/{{ user['uid'] }}">
+                        <button type="submit" class="btn btn-primary">Add Friend</button>
+                    </form>
+                    {% elif application and application['status'] == 'InProgress' %}
+                    <form class="col" method="post" action="/delete/friend/{{ user['uid'] }}">
+                        <button type="submit" class="btn btn-outline-secondary">Cancel Application</button>
+                    </form>
+                    {% elif approval and approval['status'] == 'InProgress' %}
+                    <form class="col" method="post" action="/approve/friend/{{ user['uid'] }}">
+                        <button type="submit" class="btn btn-success">Approve</button>
+                    </form>
+                    <form class="col" method="post" action="/delete/friend/{{ user['uid'] }}">
+                        <button type="submit" class="btn btn-danger">Decline</button>
+                      </form>
+                    {% else %}
+                    <form class="col" method="post" action="/delete/friend/{{ user['uid'] }}">
+                        <button type="submit" class="btn btn-danger">Remove Friend</button>
+                    </form>
+                    {% endif %}
+                {% endif %}
+                </div>
+
+                <hr/>
+
+                <p class="small text-muted mb-1">Profile</p>
+                <p class="mb-0"><span style="white-space: pre-line">{{ user['profile'] }}</span></p>
+                  
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock %}

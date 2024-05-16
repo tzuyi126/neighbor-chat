@@ -1,0 +1,136 @@
+{% extends 'base.html'%}
+
+{% block header %}
+  <h1>{% block title %}Searched Result: "{{ keyword }}"{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+            <div>Searched Result in Neighbor Feeds</div>
+            <div class="card mb-4">
+                {% for item in neighbor_list %}
+                <a href="{{ url_for('chat.message', tid=item.tid) }}">
+                    <div class="card-header">         
+                        <div class="media-body ml-3">{{ item.first_name }}</div>
+                        <div class="text-muted small">{{ item.post_time }}</div>
+                        {% if item.reply_to_name %}
+                            <div class="text-muted small">@{{ item.reply_to_name }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="card-body"> 
+                        <div><span style="white-space: pre-line">{{ item.text_body }}</span></div>
+                        <div class="float-end mt-2 pt-1">
+                        {% if item.uid == g.user['uid'] and item.text_body != '[DELETED]' %}
+                            <a class="btn btn-outline-danger" href="{{url_for('chat.delete', mid=item.mid)}}">Delete</a>
+                        {% endif %}
+                            <a class="btn btn-outline-primary" href="{{url_for('chat.reply', mid=item.mid)}}">Reply</a>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+
+            <div>Searched Result in Friend Feeds</div>
+            <div class="card mb-4">
+                {% for item in friend_list %}
+                <a href="{{ url_for('chat.message', tid=item.tid) }}">
+                    <div class="card-header">         
+                        <div class="media-body ml-3">{{ item.first_name }}</div>
+                        <div class="text-muted small">{{ item.post_time }}</div>
+                        {% if item.reply_to_name %}
+                            <div class="text-muted small">@{{ item.reply_to_name }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="card-body"> 
+                        <div><span style="white-space: pre-line">{{ item.text_body }}</span></div>
+                        <div class="float-end mt-2 pt-1">
+                        {% if item.uid == g.user['uid'] and item.text_body != '[DELETED]' %}
+                            <a class="btn btn-outline-danger" href="{{url_for('chat.delete', mid=item.mid)}}">Delete</a>
+                        {% endif %}
+                            <a class="btn btn-outline-primary" href="{{url_for('chat.reply', mid=item.mid)}}">Reply</a>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+
+            <div>Searched Result in Blocks</div>
+            <div class="card mb-4">
+                {% for item in block_list %}
+                <a href="{{ url_for('chat.message', tid=item.tid) }}">
+                    <div class="card-header">         
+                        <div class="media-body ml-3">{{ item.first_name }}</div>
+                        <div class="text-muted small">{{ item.post_time }}</div>
+                        {% if item.reply_to_name %}
+                            <div class="text-muted small">@{{ item.reply_to_name }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="card-body"> 
+                        <div><span style="white-space: pre-line">{{ item.text_body }}</span></div>
+                        <div class="float-end mt-2 pt-1">
+                        {% if item.uid == g.user['uid'] and item.text_body != '[DELETED]' %}
+                            <a class="btn btn-outline-danger" href="{{url_for('chat.delete', mid=item.mid)}}">Delete</a>
+                        {% endif %}
+                            <a class="btn btn-outline-primary" href="{{url_for('chat.reply', mid=item.mid)}}">Reply</a>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            
+            <div>Searched Result in Hoods</div>
+            <div class="card mb-4">
+                {% for item in hood_list %}
+                <a href="{{ url_for('chat.message', tid=item.tid) }}">
+                    <div class="card-header">         
+                        <div class="media-body ml-3">{{ item.first_name }}</div>
+                        <div class="text-muted small">{{ item.post_time }}</div>
+                        {% if item.reply_to_name %}
+                            <div class="text-muted small">@{{ item.reply_to_name }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="card-body"> 
+                        <div><span style="white-space: pre-line">{{ item.text_body }}</span></div>
+                        <div class="float-end mt-2 pt-1">
+                        {% if item.uid == g.user['uid'] and item.text_body != '[DELETED]' %}
+                            <a class="btn btn-outline-danger" href="{{url_for('chat.delete', mid=item.mid)}}">Delete</a>
+                        {% endif %}
+                            <a class="btn btn-outline-primary" href="{{url_for('chat.reply', mid=item.mid)}}">Reply</a>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            
+            <div>Searched Result in Direct Messages</div>
+            <div class="card mb-4">
+                {% for item in user_list %}
+                <a href="{{ url_for('chat.message', tid=item.tid) }}">
+                    <div class="card-header">         
+                        <div class="media-body ml-3">{{ item.first_name }}</div>
+                        <div class="text-muted small">{{ item.post_time }}</div>
+                        {% if item.reply_to_name %}
+                            <div class="text-muted small">@{{ item.reply_to_name }}</div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="card-body"> 
+                        <div><span style="white-space: pre-line">{{ item.text_body }}</span></div>
+                        <div class="float-end mt-2 pt-1">
+                        {% if item.uid == g.user['uid'] and item.text_body != '[DELETED]' %}
+                            <a class="btn btn-outline-danger" href="{{url_for('chat.delete', mid=item.mid)}}">Delete</a>
+                        {% endif %}
+                            <a class="btn btn-outline-primary" href="{{url_for('chat.reply', mid=item.mid)}}">Reply</a>
+                        </div>
+                    </div>
+                </a>
+                {% endfor %}
+            </div>
+            
+    </div>
+</div>
+{%endblock%}

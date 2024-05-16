@@ -1,0 +1,152 @@
+{% extends 'base.html'%}
+
+{% block header %}
+  <h1>{% block title %}Dashboard{% endblock %}</h1>
+  <div class="row">
+    <div class="col">
+        <a type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary"
+        href="{{ url_for('chat.create') }}">New Thread</a>
+    </div>
+    <div class="col-3">
+        <label class="form-label">Geographical Range
+            {% if geo_range %}
+                : {{ geo_range }} miles
+            {% endif %}
+        </label>
+        <form method="post" action="/filter">
+            <input type="range" class="form-range" min="0" max="10" step="2" name="geo_range" style="width: 100%;">
+            <input type="submit" class="btn btn-outline-success" value="Filter">
+        </form>
+    </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+
+    <hr />
+
+    <h2>Neighbor Feeds</h2>
+    {% if neighbor_list %}
+        <table class="table table-bordered">
+            <thead></thead>
+                <tr>
+                    <th>Post By</th>
+                    <th>Title</th>
+                    <th>Post Time</th>
+                </tr>
+            </thead>
+            <tbody>
+              {% for item in neighbor_list %}
+              <tr>
+                  <td>{{ item.first_name }} {{ item.last_name }}</td>
+                  <td><a href="{{ url_for('chat.message', tid=item.tid) }}">{{ item.title }}</a></td>
+                  <td>{{ item.ttime }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No message.</p>
+    {% endif %}
+
+    <hr />
+
+    <h2>Friend Feeds</h2>
+    {% if friend_list %}
+        <table class="table table-bordered">
+            <thead></thead>
+                <tr>
+                  <th>Post By</th>
+                  <th>Title</th>
+                  <th>Post Time</th>
+                </tr>
+            </thead>
+            <tbody>
+              {% for item in friend_list %}
+              <tr>
+                  <td>{{ item.first_name }} {{ item.last_name }}</td>
+                  <td><a href="{{ url_for('chat.message', tid=item.tid) }}">{{ item.title }}</a></td>
+                  <td>{{item.ttime}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No message.</p>
+    {% endif %}
+
+    <hr />
+    
+    <h2>Block Feeds</h2>
+    {% if block_list %}
+        <table class="table table-bordered">
+            <thead></thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Post Time</th>
+                </tr>
+            </thead>
+            <tbody>
+              {% for item in block_list %}
+              <tr>
+                  <td><a href="{{ url_for('chat.message', tid=item.tid) }}">{{ item.title }}</a></td>
+                  <td>{{ item.ttime }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No message.</p>
+    {% endif %}
+    
+    <hr />
+
+    <h2>Hood Feeds</h2>
+    {% if hood_list %}
+        <table class="table table-bordered">
+            <thead></thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Post Time</th>
+                </tr>
+            </thead>
+            <tbody>
+              {% for item in hood_list %}
+              <tr>
+                <td><a href="{{ url_for('chat.message', tid=item.tid) }}">{{ item.title }}</a></td>
+                <td>{{item.ttime}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No message.</p>
+    {% endif %}
+
+    <hr />
+
+    <h2>Direct Feeds</h2>
+    {% if user_list %}
+        <table class="table table-bordered">
+            <thead></thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Post Time</th>
+                </tr>
+            </thead>
+            <tbody>
+              {% for item in user_list %}
+              <tr>
+                <td><a href="{{ url_for('chat.message', tid=item.tid) }}">{{ item.title }}</a></td>
+                <td>{{item.ttime}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No message.</p>
+    {% endif %}
+
+</div>
+{%endblock%}

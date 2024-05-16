@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Hood & Block{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+  {% for hood in hoods %}
+  <hr />
+
+  <h2>{{ hood['hname'] }}</h2>
+  <ul class="list-group">
+    {% for block in blocks %}
+
+      {% if block['hid'] == hood['hid'] %}
+        <li class="list-group-item">
+          <div class="row">
+            <a class="col" href="{{ url_for('block.block_member', bid=block['bid']) }}">{{ block['bname'] }}</a>
+
+            {% if block['bid'] in follow_list %}
+              <form class="col-1" method="post" action="/unfollow/block/{{ block['bid'] }}">
+                <button type="submit" class="btn btn-outline-secondary">Unfollow</button>
+              </form>
+            {% else %}
+              <form class="col-1" method="post" action="/follow/block/{{ block['bid'] }}">
+                <button type="submit" class="btn btn-outline-primary">Follow</button>
+              </form>
+            {% endif %}
+
+            {% if not block_member %}
+              <form class="col-1" method="post" action="/apply/block/{{ block['bid'] }}">
+                <button type="submit" class="btn btn-primary">Apply</button>
+              </form>
+            {% elif block_member['status'] == 'InProgress' and block_member['bid'] == block['bid'] %}
+              <form class="col-1" method="post" action="/delete/block/{{ block['bid'] }}">
+                <button type="submit" class="btn btn-outline-secondary">Withdraw</button>
+              </form>
+            {% elif block_member['status'] == 'Approved' and block_member['bid'] == block['bid'] %}
+              <form class="col-1" method="post" action="/delete/block/{{ block['bid'] }}">
+                <button type="submit" class="btn btn-danger">Quit</button>
+              </form>
+            {% else %}
+              <form class="col-1">
+                <button type="submit" class="btn btn-outline-danger" disabled>Disabled</button>
+              </form>
+            {% endif %}
+          </div>
+        </li>
+
+      {% endif %}
+    {% endfor %}
+  </ul>
+  {% endfor %}
+  
+
+  {% if block_member['status'] == 'Approved' %}
+    <hr />
+    
+    <h3 class="text-muted">You are a member of block: "{{ block_member['bname'] }}".</h3>
+
+    <hr />
+    
+    <h4>Needs Approval</h4>
+    
+    {% if not approvals %}
+      <p>No one is waiting for your approval.</p>
+    {% else %}
+      <ul class="list-group">
+        {% for approval_user in approvals %}
+          <li class="list-group-item">
+            <div class="row">
+              <a class="col" href="{{ url_for('friends.user', id=approval_user['uid']) }}">{{ approval_user['first_name'] }} {{ approval_user['last_name'] }}</a>
+              <form class="col-1" method="post" action="/approve/block/{{ approval_user['bid'] }}/{{ approval_user['uid'] }}">
+                <button type="submit" class="btn btn-success">Approve</button>
+              </form>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+    <hr />
+      
+    <h4>Feeds</h4>
+
+    {% if not block_feeds %}
+      <p>No message.</p>
+    {% else %}
+      <table class="table table-bordered">
+        <thead></thead>
+            <tr>
+              <th>Title</th>
+              <th>Post Time</th>
+            </tr>
+        </thead>
+        <tbody>
+          {% for item in block_feeds %}
+          <tr>
+              <td><a href="{{ url_for('chat.message', tid=item.tid) }}">{{ item.title }}</a></td>
+              <td>{{ item.ttime }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% endif %}
+  {% endif %}
+
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Block{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <hr />
+  <h4>{{ block['bname'] }}</h4>
+
+  <ul class="list-group">
+    {% for user in block_members %}
+    <li class="list-group-item">
+      <div class="row">
+        <a class="col" href="{{ url_for('friends.user', id=user['uid']) }}">{{ user['first_name'] }} {{ user['last_name'] }}</a>
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

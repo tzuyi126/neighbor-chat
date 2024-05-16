@@ -1,0 +1,48 @@
+{% extends 'base.html'%}
+
+{% block header %}
+  <h1>{% block title %}Reply Message{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<hr />
+<div class="container">
+    <div class="card mb-4">
+        <form class="form-inline" method="post">
+            <div class="card-header"> 
+                    
+                <div class="media-body ml-3">{{ message_details.post_name }}</div>
+                <div class="text-muted small">{{ message_details.post_time }}</div>
+                {% if message_details.reply_to_name %}
+                <div class="text-muted small">@{{ message_details.reply_to_name }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="card-body"> 
+                <div><span style="white-space: pre-line">{{ message_details.text_body }}</span></div>
+            
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Your Reply</span>
+                    <textarea class="form-control" style="min-height: 10em;" maxlength=4000 name="text_body_"></textarea>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Location</span>
+                    <input type="text" class="form-control" aria-label="Sizing example input" 
+                    aria-describedby="inputGroup-sizing-default" name="loc_street" placeholder="Street">
+                    <input type="text" class="form-control" aria-label="Sizing example input" 
+                    aria-describedby="inputGroup-sizing-default" name="loc_city" placeholder="City">
+                    <input type="text" class="form-control" aria-label="Sizing example input" 
+                    aria-describedby="inputGroup-sizing-default" name="loc_state" placeholder="State">
+                    <input type="text" class="form-control" aria-label="Sizing example input" 
+                    aria-describedby="inputGroup-sizing-default" name="loc_zip" placeholder="Zip Code">
+                </div>
+
+                <div class="float-end mt-2 pt-1">
+                    <a type="button" class="btn btn-outline-primary me-1 flex-grow-1" href="{{ url_for('chat.message', tid=tid) }}">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Submit</input>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{%endblock%}

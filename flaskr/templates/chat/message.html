@@ -1,0 +1,38 @@
+{% extends 'base.html'%}
+
+{% block header %}
+  <h1>{% block title %}Message{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<hr />
+
+<div class="container">
+    <h4>{{ thread_detail['title'] }}</h4>
+    <h3 class="text-muted small">{{ thread_detail['recipient'] }}: {{ recipient_name }}</h3>
+    <div class="card mb-4">
+        {% for item in message_list %}
+            <div class="card-header">
+                <a class="media-body ml-3" href="{{ url_for('friends.user', id=item['uid']) }}">{{ item.post_name }}</a>
+                <div class="text-muted small">{{ item.post_time }}</div>
+                {% if item.mlatitude and item.mlongitude %}
+                    <div class="text-muted small">({{ item.mlatitude }}, {{ item.mlongitude }})</div>
+                {% endif %}
+                {% if item.reply_to_name %}
+                    <div class="text-muted small">@{{ item.reply_to_name }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="card-body"> 
+                <div><span style="white-space: pre-line">{{ item.text_body }}</span></div>
+                <div class="float-end mt-2 pt-1">
+                {% if item.uid == g.user['uid'] and item.text_body != '[DELETED]' %}
+                    <a class="btn btn-outline-danger" href="{{url_for('chat.delete', mid=item.mid)}}">Delete</a>
+                {% endif %}
+                    <a class="btn btn-outline-primary" href="{{url_for('chat.reply', mid=item.mid)}}">Reply</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{%endblock%}

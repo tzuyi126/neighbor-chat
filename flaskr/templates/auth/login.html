@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Log In{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <div class="login-box">
+    <form method="post">
+    <div class="mb-3">
+      <label>Email address</label>
+      <input type="email" class="form-control" aria-describedby="emailHelp" name="email" required>
+    </div>
+    <div class="mb-3">
+      <label>Password</label>
+      <input type="password" class="form-control" name="password" required>
+    </div>
+    <input type="submit" class="btn btn-primary" value="Log In">
+    </form>
+  </div>
+{% endblock %}

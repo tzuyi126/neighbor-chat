@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Neighbors{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <hr />
+
+  <ul class="list-group">
+    {% for user in users %}
+    <li class="list-group-item">
+      <div class="row">
+        <a class="col" href="{{ url_for('friends.user', id=user['uid']) }}">{{ user['first_name'] }} {{ user['last_name'] }}</a>
+
+        {% if user['uid'] in neighbor_list %}
+          <form class="col-1" method="post" action="/unfollow/neighbor/{{ user['uid'] }}">
+            <button type="submit" class="btn btn-outline-secondary">Unfollow</button>
+          </form>
+        {% else %}
+          <form class="col-1" method="post" action="/follow/neighbor/{{ user['uid'] }}">
+            <button type="submit" class="btn btn-outline-primary">Follow</button>
+          </form>
+        {% endif %}
+      </div>
+    </li>
+    {% endfor %}
+  </ul>
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Friends{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <hr />
+  <h4>Friends</h4>
+    {% if not friends %}
+      <p>You have no friends.</p>
+    {% else %}
+      <ul class="list-group">
+        {% for friend in friends %}
+          <li class="list-group-item">
+            <div class="row">
+              <a class="col" href="{{ url_for('friends.user', id=friend['uid']) }}">{{ friend['first_name'] }} {{ friend['last_name'] }}</a>
+              <form class="col-1" method="post" action="/delete/friend/{{ friend['uid'] }}">
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+  <hr />
+
+  <h4>Needs Approval</h4>
+    {% if not approvals %}
+      <p>No one is waiting for your approval.</p>
+    {% else %}
+      <ul class="list-group">
+        {% for approval_user in approvals %}
+          <li class="list-group-item">
+            <div class="row">
+              <a class="col" href="{{ url_for('friends.user', id=approval_user['uid']) }}">{{ approval_user['first_name'] }} {{ approval_user['last_name'] }}</a>
+              <form class="col-1" method="post" action="/approve/friend/{{ approval_user['uid'] }}">
+                <button type="submit" class="btn btn-success">Approve</button>
+              </form>
+              <form class="col-1 mr-1" method="post" action="/delete/friend/{{ approval_user['uid'] }}">
+                <button type="submit" class="btn btn-danger">Decline</button>
+              </form>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+
+  <hr />
+
+  <h4>Applied</h4>
+    {% if not applying %}
+      <p>You have no waiting approvals.</p>
+    {% else %}
+    <ul class="list-group">
+      {% for applying_user in applying %}
+        <li class="list-group-item">
+          <div class="row">
+            <a class="col" href="{{ url_for('friends.user', id=applying_user['fuid']) }}">{{ applying_user['first_name'] }} {{ applying_user['last_name'] }}</a>
+            <form class="col-1" method="post" action="/delete/friend/{{ applying_user['fuid'] }}">
+              <button type="submit" class="btn btn-outline-secondary">Cancel</button>
+            </form>
+          </div>
+        </li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+    
+  <hr />
+
+  <h4>Recommended</h4>
+    {% if not recommend %}
+      <p>You have no recommendation.</p>
+    {% else %}
+      <ul class="list-group">
+        {% for recommend_user in recommend %}
+        <li class="list-group-item">
+          <div class="row">
+            <a class="col" href="{{ url_for('friends.user', id=recommend_user['uid']) }}">{{ recommend_user['first_name'] }} {{ recommend_user['last_name'] }}</a>
+            <form class="col-1" method="post" action="/add/friend/{{ recommend_user['uid'] }}">
+              <button type="submit" class="btn btn-primary">Add Friend</button>
+            </form>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+{% endblock %}

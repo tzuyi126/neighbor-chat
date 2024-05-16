@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Thread - Neighbor Chat</title>
+    <link rel="stylesheet" href="/static/bootstrap-5.3.3-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm navbar-light bg-light">
+        <div class="container">
+          <a class="navbar-brand" href="{{ url_for('index') }}">Hi, {{ g.user['first_name'] }} {{ g.user['last_name'] }}</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <div class="navbar-nav">
+              {% if g.user %}
+              <a class="nav-item nav-link" href="{{ url_for('index') }}">Dashboard</a>
+              <a class="nav-item nav-link" href="{{ url_for('chat.unread') }}">Unread</a>
+              
+              <a class="nav-item nav-link" href="{{ url_for('block.block') }}">Hood & Block</a>
+              <a class="nav-item nav-link" href="{{ url_for('friends.friends') }}">Friends</a>
+              <a class="nav-item nav-link" href="{{ url_for('neighbors.neighbors') }}">Neighbors</a>
+              <a class="nav-item nav-link" href="{{ url_for('friends.user_self') }}">Account</a>
+              {% endif %}
+            </div>
+
+            <div class="navbar-nav ms-auto">
+                {% if g.user %}
+                  <form class="d-flex" role="search" action="/chat/message/search" method="post">
+                    <input class="form-control me-2" type="search" placeholder="Search Messages" aria-label="Search" name="keyword">
+                      <button class="btn btn-outline-success" type="submit">Search</button>
+                  </form>
+                  
+                  <a class="nav-item nav-link" href="{{ url_for('auth.logout') }}">Log Out</a>
+                {% else %}
+                  <a class="nav-item nav-link" href="{{ url_for('auth.login') }}">Log In</a>
+                  <a class="nav-item nav-link" href="{{ url_for('auth.register') }}">Register</a>
+                {% endif %}
+              </div>
+          </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        {% for message in get_flashed_messages() %}
+        <div class="flash">{{ message }}</div>
+        {% endfor %}
+    </div>
+
+    <div class="container">
+        <form class="form-inline" method="post">
+        <div class="row">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">Recipient Type</span>
+                <select class="form-control" style="color: white; background: #34568B;" id="all_classes" name="recipient">
+                    {% for o in all_classes %}
+                            <option value="{{ o }}">{{ o }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">Recipient Name</span>
+                <select class="form-control" style="color:white; background:#009B77;" id="all_entries" name="recipient_name">
+                    {% for o in all_entries %}
+                            <option value="{{ o }}">{{ o }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="inputGroup-sizing-default">Title</span>
+                <input type="text" class="form-control" aria-label="Sizing example input" 
+                aria-describedby="inputGroup-sizing-default" name="title">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">Body</span>
+                <textarea class="form-control" style="min-height: 20em;" maxlength=4000 name="text_body"></textarea>
+            </div>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">Location</span>
+                <input type="text" class="form-control" aria-label="Sizing example input" 
+                aria-describedby="inputGroup-sizing-default" name="loc_street" placeholder="Street">
+                <input type="text" class="form-control" aria-label="Sizing example input" 
+                aria-describedby="inputGroup-sizing-default" name="loc_city" placeholder="City">
+                <input type="text" class="form-control" aria-label="Sizing example input" 
+                aria-describedby="inputGroup-sizing-default" name="loc_state" placeholder="State">
+                <input type="text" class="form-control" aria-label="Sizing example input" 
+                aria-describedby="inputGroup-sizing-default" name="loc_zip" placeholder="Zip Code">
+            </div>
+            
+            <div class="input-group mb-3">
+                <button type="submit" class="btn btn-primary">Publish</button>
+            </div>
+          </div>
+        </form>
+    </div>
+
+<script src="/static/jquery-3.7.1.min.js"></script>
+<script src="/static/bootstrap-5.3.3-dist/js/bootstrap.js"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#all_classes').change(function(){
+
+        $.getJSON('/chat/_update_dropdown', {
+            selected_class: $('#all_classes').val()
+
+        }).done(function(data) {
+                $('#all_entries').html(data.html_string_selected);
+            })
+        });
+        $('#process_input').bind('click', function() {
+
+            $.getJSON('/chat/_process_data', {
+                selected_class: $('#all_classes').val(),
+                selected_entry: $('#all_entries').val(),
+
+
+            }).success(function(data) {
+                $('#processed_results').text(data.random_text);
+            })
+        return false;
+
+        });
+    });
+</script>   
+</body>
+</html>
+

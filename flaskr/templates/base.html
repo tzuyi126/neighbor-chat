@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <title>{% block title %}{% endblock %} - Neighbor Chat</title>
+  <link rel="stylesheet" href="/static/bootstrap-5.3.3-dist/css/bootstrap.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-sm navbar-light bg-light">
+    <div class="container">
+      {% if g.user %}
+        <a class="navbar-brand" href="{{ url_for('index') }}">Hi, {{ g.user['first_name'] }} {{ g.user['last_name'] }}</a>
+      {% else %}
+        <a class="navbar-brand" href="{{ url_for('index') }}">Neighbor Chat</a>
+      {% endif %}
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <div class="navbar-nav">
+          {% if g.user %}
+            <a class="nav-item nav-link" href="{{ url_for('index') }}">Dashboard</a>
+            <a class="nav-item nav-link" href="{{ url_for('chat.unread') }}">Unread</a>
+            
+            <a class="nav-item nav-link" href="{{ url_for('block.block') }}">Hood & Block</a>
+            <a class="nav-item nav-link" href="{{ url_for('friends.friends') }}">Friends</a>
+            <a class="nav-item nav-link" href="{{ url_for('neighbors.neighbors') }}">Neighbors</a>
+            <a class="nav-item nav-link" href="{{ url_for('friends.user_self') }}">Account</a>
+          {% endif %}
+        </div>
+
+        <div class="navbar-nav ms-auto">
+          {% if g.user %}
+            <form class="d-flex" role="search" action="/chat/message/search" method="post">
+              <input class="form-control me-2" type="search" placeholder="Search Messages" aria-label="Search" name="keyword">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+            
+            <a class="nav-item nav-link" href="{{ url_for('auth.logout') }}">Log Out</a>
+          {% else %}
+            <a class="nav-item nav-link" href="{{ url_for('auth.login') }}">Log In</a>
+            <a class="nav-item nav-link" href="{{ url_for('auth.register') }}">Register</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+</nav>
+
+<div class="container">
+    <header>
+      {% block header %}{% endblock %}
+    </header>
+
+    {% for message in get_flashed_messages() %}
+      <div class="flash">{{ message }}</div>
+    {% endfor %}
+
+    {% block content %}{% endblock %}
+</div>
+<script src="/static/jquery-3.7.1.min.js"></script>
+<script src="/static/bootstrap-5.3.3-dist/js/bootstrap.js"></script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Account Setting for {{ g.user['email'] }}{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+
+    <div class="mb-3">
+      <label class="required" for="firstname">First Name</label>
+      <input class="form-control" name="firstname" id="firstname" value="{{ g.user['first_name'] }}">
+    </div>
+    <div class="mb-3">
+      <label class="required" for="lastname">Last Name</label>
+      <input class="form-control" name="lastname" id="lastname" value="{{ g.user['last_name'] }}">
+    </div>
+    <div class="mb-3">
+      <label class="required" for="password">Password</label>
+      <input class="form-control" type="password" name="password" id="password" placeholder="Won't be changed if here remains empty.">
+    </div>
+    <div class="mb-3">
+      <label for="phone">Phone Number</label>
+      <input class="form-control" name="phone" id="phone" value="{{ g.user['phone_number'] }}">
+    </div>
+
+    <div class="mb-3">
+      <label for="profile">Profile (no more than 4000 characters)</label>
+      <textarea class="form-control" style="min-height: 10em;" name="profile" maxlength=4000>{{ g.user['profile'] }}</textarea>
+    </div>
+    
+    <h4>Home Address</h4>
+      
+    <div class="mb-3">
+      <label class="required" for="addr_street">Address</label>
+      <input class="form-control" name="addr_street" id="addr_street" value="{{ g.user['addr_street'] }}">
+    </div>
+    
+    <div class="mb-3">
+      <label class="required" for="addr_city">City</label>
+      <input class="form-control" name="addr_city" id="addr_city" value="{{ g.user['addr_city'] }}">
+    </div>
+
+    <div class="mb-3">
+      <label class="required" for="addr_state">State</label>
+      <input class="form-control" name="addr_state" id="addr_state" value="{{ g.user['addr_state'] }}">
+    </div>
+
+    <div class="mb-3">
+      <label class="required" for="addr_zip">Zip Code</label>
+      <input class="form-control" name="addr_zip" id="addr_zip" value="{{ g.user['addr_zip'] }}">
+    </div>
+    
+    <a type="button" class="btn btn-outline-primary me-1 flex-grow-1" href="{{ url_for('index') }}">Back</a>
+    <button type="submit" class="btn btn-primary">Update</button>
+  </form>
+{% endblock %}
